@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"encoding/json"
 	"regexp"
 	"strings"
 	"sync"
@@ -60,6 +61,21 @@ func (e Op) String() string {
 		return op
 	}
 	return "???"
+}
+
+func (e Op) MarshalJSON() ([]byte, error) {
+	return json.Marshal(e.String())
+}
+func (e *Op) UnmarshalJSON(b []byte) error {
+	Wrapped := string(b)
+	Want := strings.ToUpper(Wrapped[1:len(Wrapped)-1])
+	for op, Have := range ops {
+		if Have==Want {
+			*e = op
+			return nil
+		}
+	}
+	return fmt.Errorf("Requested Op `%s` is not a valid Op", Want)
 }
 
 // An Event describes an event that is received when files or directory
