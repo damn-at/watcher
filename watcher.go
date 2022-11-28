@@ -44,6 +44,7 @@ const (
 	Rename
 	Chmod
 	Move
+	Scan
 )
 
 var ops = map[Op]string{
@@ -53,6 +54,7 @@ var ops = map[Op]string{
 	Rename: "RENAME",
 	Chmod:  "CHMOD",
 	Move:   "MOVE",
+	Move:   "SCAN", // virtual event 'trigger'
 }
 
 // String prints the string version of the Op consts
